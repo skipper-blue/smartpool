@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Super Admin | Pool Automation System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary: #2563EB; /* Royal Blue */
+            --primary-dark: #1E40AF;
+            --secondary: #64748B;
+            --success: #10B981;
+            --warning: #F59E0B;
+            --danger: #EF4444;
+            --bg-body: #F1F5F9;
+            --bg-sidebar: #0F172A; /* Slate 900 */
+            --white: #FFFFFF;
+            --border: #E2E8F0;
+            --text-main: #1E293B;
+            --text-muted: #64748B;
+        }
+
+        * { box-sizing: border-box; outline: none; }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            margin: 0;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* --- SIDEBAR --- */
+        aside {
+            width: 260px;
+            background-color: var(--bg-sidebar);
+            color: var(--secondary);
+            display: flex;
+            flex-direction: column;
+            transition: width 0.3s;
+            flex-shrink: 0;
+        }
+
+        .brand {
+            padding: 24px;
+            color: var(--white);
+            font-size: 1.25rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .nav-menu {
+            list-style: none;
+            padding: 20px 10px;
+            margin: 0;
+            flex-grow: 1;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            margin-bottom: 4px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: all 0.2s;
+            font-size: 0.95rem;
+        }
+
+        .nav-item:hover { background-color: rgba(255,255,255,0.05); color: var(--white); }
+        .nav-item.active { background-color: var(--primary); color: var(--white); }
+        
+        .user-profile {
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--white);
+        }
+        .avatar { width: 36px; height: 36px; background: var(--primary); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: bold; }
+
+        /* --- MAIN CONTENT --- */
+        main {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+
+        header {
+            background: var(--white);
+            padding: 15px 30px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .page-title { font-size: 1.5rem; font-weight: 600; color: var(--text-main); margin: 0; }
+        .header-actions button {
+            padding: 8px 16px;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            cursor: pointer;
+            color: var(--text-muted);
+        }
+
+        .content-area { padding: 30px; max-width: 1400px; margin: 0 auto; width: 100%; }
+
+        /* --- SECTIONS Logic --- */
+        .section { display: none; animation: fadeIn 0.3s ease; }
+        .section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- DASHBOARD WIDGETS --- */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 24px;
+            margin-bottom: 30px;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+            border: 1px solid var(--border);
+        }
+
+        .stat-label { color: var(--text-muted); font-size: 0.875rem; font-weight: 500; margin-bottom: 8px; }
+        .stat-value { font-size: 2rem; font-weight: 700; color: var(--text-main); }
+        .stat-trend { font-size: 0.875rem; margin-top: 8px; display: flex; align-items: center; gap: 5px; }
+        .trend-up { color: var(--success); }
+        .trend-down { color: var(--danger); }
+
+        /* --- DATA TABLES --- */
+        .table-container {
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+
+        .table-header {
+            padding: 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 16px 24px; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.95rem; }
+        th { background-color: #F8FAFC; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; letter-spacing: 0.05em; }
+        tr:hover { background-color: #F8FAFC; }
+        tr:last-child td { border-bottom: none; }
+
+        .badge {
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .bg-success { background: #D1FAE5; color: #065F46; }
+        .bg-warning { background: #FEF3C7; color: #92400E; }
+        .bg-danger { background: #FEE2E2; color: #991B1B; }
+
+        /* --- BUTTONS --- */
+        .btn { padding: 10px 20px; border-radius: 6px; border: none; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: 0.2s;}
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-primary:hover { background: var(--primary-dark); }
+        .btn-sm { padding: 6px 12px; font-size: 0.8rem; }
+        .btn-outline { background: transparent; border: 1px solid var(--border); color: var(--text-main); }
+
+        /* --- TOAST NOTIFICATION --- */
+        .toast {
+            position: fixed; bottom: 30px; right: 30px;
+            background: #1E293B; color: white;
+            padding: 15px 25px; border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            transform: translateY(100px); opacity: 0;
+            transition: all 0.3s ease;
+            display: flex; align-items: center; gap: 10px;
+            z-index: 100;
+        }
+        .toast.show { transform: translateY(0); opacity: 1; }
+
+        /* --- MODAL --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0,0,0,0.5);
+            display: none; align-items: center; justify-content: center;
+            z-index: 50;
+        }
+        .modal { background: white; width: 500px; border-radius: 12px; padding: 30px; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
+        .modal-header { font-size: 1.25rem; font-weight: bold; margin-bottom: 20px; display: flex; justify-content: space-between;}
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-size: 0.9rem; font-weight: 500; color: var(--text-muted); }
+        .form-input { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; }
+
+    </style>
+</head>
+<body>
+
+    <aside>
+        <div class="brand">
+            <i class="fa-solid fa-billiards"></i> POOL MASTER PRO
+        </div>
+        <ul class="nav-menu">
+            <li class="nav-item active" onclick="showSection('dashboard', this)">
+                <i class="fa-solid fa-chart-line"></i> Dashboard
+            </li>
+            <li class="nav-item" onclick="showSection('owners', this)">
+                <i class="fa-solid fa-users"></i> Owner Mgmt
+            </li>
+            <li class="nav-item" onclick="showSection('tables', this)">
+                <i class="fa-solid fa-table-list"></i> Table Status
+            </li>
+            <li class="nav-item" onclick="showSection('finance', this)">
+                <i class="fa-solid fa-money-bill-transfer"></i> Finance
+            </li>
+            <li class="nav-item" onclick="showSection('settings', this)">
+                <i class="fa-solid fa-gear"></i> Settings
+            </li>
+        </ul>
+        <div class="user-profile">
+            <div class="avatar">SA</div>
+            <div>
+                <div style="font-weight: 600; font-size: 0.9rem;">Super Admin</div>
+                <div style="font-size: 0.75rem; opacity: 0.7;">System Owner</div>
+            </div>
+        </div>
+    </aside>
+
+    <main>
+        <header>
+            <h2 class="page-title" id="pageTitle">Dashboard Overview</h2>
+            <div class="header-actions">
+                <button><i class="fa-regular fa-bell"></i> Alerts (2)</button>
+                <button style="margin-left: 10px; color: var(--danger);">Log Out</button>
+            </div>
+        </header>
+
+        <div class="content-area">
+
+            <div id="dashboard" class="section active">
+                <div class="stats-grid">
+                    <div class="card">
+                        <div class="stat-label">Total Revenue (Today)</div>
+                        <div class="stat-value">KES 15,400</div>
+                        <div class="stat-trend trend-up"><i class="fa-solid fa-arrow-trend-up"></i> 12% vs yesterday</div>
+                    </div>
+                    <div class="card">
+                        <div class="stat-label">Active Tables</div>
+                        <div class="stat-value">45 <span style="font-size: 1rem; color: #94a3b8;">/ 50</span></div>
+                        <div class="stat-trend trend-down"><i class="fa-solid fa-circle-exclamation"></i> 5 Offline</div>
+                    </div>
+                    <div class="card">
+                        <div class="stat-label">Pending Settlements</div>
+                        <div class="stat-value">KES 45,000</div>
+                        <div class="stat-trend"><span style="color: var(--warning);">Due within 3 days</span></div>
+                    </div>
+                    <div class="card">
+                        <div class="stat-label">Total Owners</div>
+                        <div class="stat-value">14</div>
+                        <div class="stat-trend trend-up"><i class="fa-solid fa-plus"></i> 1 New this week</div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 style="margin:0">Live Transaction Feed</h3>
+                        <button class="btn btn-sm btn-outline">View All</button>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Transaction Code</th>
+                                <th>Table ID</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>14:35:01</td>
+                                <td>QGH12399AA</td>
+                                <td>Pool-105 (Westlands)</td>
+                                <td>KES 50</td>
+                                <td><span class="badge bg-success">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td>14:32:15</td>
+                                <td>QGH12401BB</td>
+                                <td>Pool-201 (Langata)</td>
+                                <td>KES 20</td>
+                                <td><span class="badge bg-success">Success</span></td>
+                            </tr>
+                            <tr>
+                                <td>14:28:10</td>
+                                <td>QGH12555CC</td>
+                                <td>Pool-105 (Westlands)</td>
+                                <td>KES 20</td>
+                                <td><span class="badge bg-danger">Failed</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="owners" class="section">
+                <div style="display: flex; justify-content: flex-end; margin-bottom: 20px;">
+                    <button class="btn btn-primary" onclick="toggleModal('ownerModal')"><i class="fa-solid fa-plus"></i> Add New Owner</button>
+                </div>
+                
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Owner Name</th>
+                                <th>Phone</th>
+                                <th>Tables Owned</th>
+                                <th>Total Revenue</th>
+                                <th>Commission</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>John Doe</td>
+                                <td>0722 123 456</td>
+                                <td>4 Tables</td>
+                                <td>KES 450,000</td>
+                                <td>20%</td>
+                                <td><button class="btn btn-sm btn-outline">Manage</button></td>
+                            </tr>
+                            <tr>
+                                <td>Jane Smith</td>
+                                <td>0733 987 654</td>
+                                <td>12 Tables</td>
+                                <td>KES 1,200,000</td>
+                                <td>15%</td>
+                                <td><button class="btn btn-sm btn-outline">Manage</button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tables" class="section">
+                <div class="stats-grid">
+                    <div class="card" style="border-left: 4px solid var(--success);">
+                        <div class="stat-label">Healthy Devices</div>
+                        <div class="stat-value">45</div>
+                    </div>
+                    <div class="card" style="border-left: 4px solid var(--danger);">
+                        <div class="stat-label">Offline Devices</div>
+                        <div class="stat-value">5</div>
+                    </div>
+                </div>
+
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3 style="margin:0">Device Inventory</h3>
+                        <input type="text" placeholder="Search Table ID..." class="form-input" style="width: 200px;">
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Table ID</th>
+                                <th>Location</th>
+                                <th>Owner</th>
+                                <th>Signal</th>
+                                <th>Status</th>
+                                <th>Controls</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#105</td>
+                                <td>Westlands Lounge</td>
+                                <td>John Doe</td>
+                                <td style="color: var(--success);"><i class="fa-solid fa-wifi"></i> Strong</td>
+                                <td><span class="badge bg-success">Online</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline" onclick="simulateAction('Rebooting Table #105...')"><i class="fa-solid fa-power-off"></i> Reboot</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#108</td>
+                                <td>CBD Bar</td>
+                                <td>John Doe</td>
+                                <td style="color: var(--danger);"><i class="fa-solid fa-wifi"></i> No Signal</td>
+                                <td><span class="badge bg-danger">Offline</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline" onclick="simulateAction('Pinging Table #108...')">Diagnostics</button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>#201</td>
+                                <td>Langata Road</td>
+                                <td>Jane Smith</td>
+                                <td style="color: var(--warning);"><i class="fa-solid fa-wifi"></i> Weak</td>
+                                <td><span class="badge bg-warning">In Use</span></td>
+                                <td>
+                                    <button class="btn btn-sm btn-outline" disabled>Locked</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="finance" class="section">
+                <div class="card" style="margin-bottom: 30px;">
+                    <h3>Settlement Generator</h3>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">Calculate monthly payouts for all table owners.</p>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-primary" onclick="simulateAction('Generating PDF Report...')"><i class="fa-solid fa-file-invoice"></i> Generate Report</button>
+                        <button class="btn btn-outline" onclick="simulateAction('Exporting CSV...')"><i class="fa-solid fa-download"></i> Export CSV</button>
+                    </div>
+                </div>
+                <div class="table-container">
+                    <div class="table-header">
+                        <h3>Payout History</h3>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Owner</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Nov 01, 2025</td>
+                                <td>John Doe</td>
+                                <td>KES 45,000</td>
+                                <td><span class="badge bg-success">Paid</span></td>
+                            </tr>
+                            <tr>
+                                <td>Nov 01, 2025</td>
+                                <td>Jane Smith</td>
+                                <td>KES 120,000</td>
+                                <td><span class="badge bg-success">Paid</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="settings" class="section">
+                <div class="card" style="max-width: 600px;">
+                    <h3 style="margin-top:0;">Global Pricing Configuration</h3>
+                    <div class="form-group">
+                        <label>Standard Short Game (10 Mins) Price (KES)</label>
+                        <input type="number" class="form-input" value="20">
+                    </div>
+                    <div class="form-group">
+                        <label>Standard Long Game (30 Mins) Price (KES)</label>
+                        <input type="number" class="form-input" value="50">
+                    </div>
+                    <button class="btn btn-primary" onclick="simulateAction('Settings Saved!')">Save Changes</button>
+                </div>
+
+                <div class="card" style="max-width: 600px; margin-top: 20px;">
+                    <h3 style="margin-top:0;">API Configuration</h3>
+                    <div class="form-group">
+                        <label>M-Pesa Consumer Key</label>
+                        <input type="password" class="form-input" value="****************">
+                    </div>
+                    <div class="form-group">
+                        <label>M-Pesa Consumer Secret</label>
+                        <input type="password" class="form-input" value="****************">
+                    </div>
+                    <button class="btn btn-outline">Test Connection</button>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="ownerModal" class="modal-overlay" onclick="closeModalOnOutsideClick(event, 'ownerModal')">
+        <div class="modal">
+            <div class="modal-header">
+                <span>Add New Owner</span>
+                <span style="cursor: pointer;" onclick="toggleModal('ownerModal')"><i class="fa-solid fa-times"></i></span>
+            </div>
+            <div class="form-group">
+                <label>Full Name</label>
+                <input type="text" class="form-input" placeholder="e.g. Michael Kamau">
+            </div>
+            <div class="form-group">
+                <label>Phone Number</label>
+                <input type="text" class="form-input" placeholder="07xx xxx xxx">
+            </div>
+            <div class="form-group">
+                <label>Commission Rate (%)</label>
+                <input type="number" class="form-input" value="20">
+            </div>
+            <button class="btn btn-primary" style="width: 100%;" onclick="saveOwner()">Create Account</button>
+        </div>
+    </div>
+
+    <div id="toast" class="toast">
+        <i class="fa-solid fa-circle-check" style="color: var(--success);"></i>
+        <span id="toastMsg">Action Successful</span>
+    </div>
+
+    <script>
+        // Navigation Logic
+        function showSection(sectionId, element) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            // Show target section
+            document.getElementById(sectionId).classList.add('active');
+            
+            // Update Menu Active State
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            element.classList.add('active');
+
+            // Update Header Title
+            const titles = {
+                'dashboard': 'Dashboard Overview',
+                'owners': 'Pool Table Owners',
+                'tables': 'Device Status & Control',
+                'finance': 'Financial Reports',
+                'settings': 'System Settings'
+            };
+            document.getElementById('pageTitle').innerText = titles[sectionId];
+        }
+
+        // Modal Logic
+        function toggleModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.style.display = modal.style.display === 'flex' ? 'none' : 'flex';
+        }
+
+        function closeModalOnOutsideClick(event, modalId) {
+            if (event.target.id === modalId) {
+                toggleModal(modalId);
+            }
+        }
+
+        // Action Simulation
+        function saveOwner() {
+            toggleModal('ownerModal');
+            showToast('New Owner Created Successfully');
+        }
+
+        function simulateAction(msg) {
+            showToast(msg);
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = message;
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
