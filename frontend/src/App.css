@@ -1,0 +1,61 @@
+/* 1. The Main Container: Holds everything */
+.app-container {
+    display: flex;        /* Creates the side-by-side layout */
+    height: 100vh;        /* Forces full screen height */
+    width: 100vw;
+    overflow: hidden;     /* Prevents double scrollbars */
+    background-color: #f4f6f9; /* Light background for the content area */
+}
+
+/* 2. The Sidebar: (Already defined in sidebar.css, but ensure this logic) */
+.sidebar {
+    width: 250px;         /* Fixed width */
+    height: 100%;         /* Full height */
+    flex-shrink: 0;       /* Prevents sidebar from shrinking */
+    overflow-y: auto;     /* Scrollable sidebar if menu is long */
+}
+
+/* 3. The Right Side Wrapper: Holds Header + Page Content */
+.main-content {
+    flex: 1;              /* Takes up all remaining width */
+    display: flex;        
+    flex-direction: column; /* Stacks Header on top of Content */
+    height: 100%;
+    overflow-y: auto;     /* Allows the content body to scroll independently */
+    position: relative;
+}
+
+/* 4. The Header: Sits at the top of .main-content */
+.top-header {
+    height: 60px;         /* Fixed height for header */
+    width: 100%;
+    background: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    position: sticky;     /* Optional: Keeps header at top when scrolling */
+    top: 0;
+    z-index: 100;
+}
+
+/* 5. The Page Content Area */
+.content-body {
+    padding: 20px;
+    flex: 1;              /* Fills the rest of the vertical space */
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 900px) {
+    .sidebar {
+        position: fixed;  /* Sidebar slides over content on mobile */
+        left: -250px;     /* Hidden by default */
+        z-index: 1000;
+        transition: 0.3s;
+    }
+    
+    .sidebar.show {
+        left: 0;          /* Slide in */
+    }
+}
