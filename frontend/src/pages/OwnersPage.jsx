@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import OwnerDetail from '../components/ownersDetails'; // Make sure the path is correct
 import '../assets/css/Owners.css';
 
 const OwnersPage = () => {
@@ -6,13 +7,14 @@ const OwnersPage = () => {
     const [viewMode, setViewMode] = useState('grid');
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState('');
+    const [selectedOwner, setSelectedOwner] = useState(null); // New state for navigation
 
     // MOCK DATA
     const [owners, setOwners] = useState([
-        { id: 1, name: 'John Kamau', email: 'john.k@gmail.com', phone: '+254 712 345 678', tables: 5, revenue: 125000, status: 'Active' },
-        { id: 2, name: 'Sarah Ochieng', email: 'sarah.o@yahoo.com', phone: '+254 722 987 654', tables: 3, revenue: 89000, status: 'Active' },
-        { id: 3, name: 'David Mwangi', email: 'd.mwangi@biz.co.ke', phone: '+254 733 111 222', tables: 1, revenue: 12000, status: 'Pending' },
-        { id: 4, name: 'City Pub Ltd', email: 'admin@citypub.com', phone: '+254 700 000 000', tables: 12, revenue: 450000, status: 'Active' },
+        { id: 1, name: 'John Kamau', email: 'john.k@gmail.com', phone: '+254 712 345 678', tables: 5, revenue: 125000, status: 'Active', location: 'Westlands' },
+        { id: 2, name: 'Sarah Ochieng', email: 'sarah.o@yahoo.com', phone: '+254 722 987 654', tables: 3, revenue: 89000, status: 'Active', location: 'Kasarani' },
+        { id: 3, name: 'David Mwangi', email: 'd.mwangi@biz.co.ke', phone: '+254 733 111 222', tables: 1, revenue: 12000, status: 'Pending', location: 'CBD' },
+        { id: 4, name: 'City Pub Ltd', email: 'admin@citypub.com', phone: '+254 700 000 000', tables: 12, revenue: 450000, status: 'Active', location: 'Langata' },
     ]);
 
     // FORM STATE
@@ -32,6 +34,7 @@ const OwnersPage = () => {
             name: formData.name,
             email: formData.email,
             phone: formData.phone,
+            location: formData.location,
             tables: 0,
             revenue: 0,
             status: 'Active'
@@ -42,6 +45,17 @@ const OwnersPage = () => {
         alert("Owner created successfully!");
     };
 
+    // --- CONDITIONAL RENDER: SHOW DETAIL VIEW IF SELECTED ---
+    if (selectedOwner) {
+        return (
+            <OwnerDetail 
+                owner={selectedOwner} 
+                onBack={() => setSelectedOwner(null)} 
+            />
+        );
+    }
+
+    // --- DEFAULT RENDER: LIST VIEW ---
     return (
         <div className="fade-in">
             
@@ -78,8 +92,8 @@ const OwnersPage = () => {
 
             {/* 2. TOOLBAR */}
             <div className="toolbar-fancy">
-                <div style={{display:'flex', gap:'15px', alignItems:'center'}}>
-                    <div style={{position:'relative'}}>
+                <div style={{display:'flex', gap:'15px', alignItems:'center', flexWrap: 'wrap'}}>
+                    <div style={{position:'relative', flex: 1}}>
                         <i className="fa-solid fa-search" style={{position:'absolute', left:'12px', top:'12px', color:'#94a3b8'}}></i>
                         <input 
                             type="text" 
@@ -87,13 +101,13 @@ const OwnersPage = () => {
                             placeholder="Search owners..." 
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            style={{paddingLeft:'35px'}}
+                            style={{paddingLeft:'35px', width: '100%', minWidth: '200px'}}
                         />
                     </div>
                     <div className="filter-badge">Active ({filteredOwners.length})</div>
                 </div>
                 
-                <div style={{display:'flex', gap:'10px'}}>
+                <div style={{display:'flex', gap:'10px', marginTop: '10px'}}>
                     <button className={`btn btn-sm ${viewMode === 'grid' ? 'btn-primary' : 'btn-outline'}`} onClick={() => setViewMode('grid')}>
                         <i className="fa-solid fa-border-all"></i>
                     </button>
@@ -116,8 +130,10 @@ const OwnersPage = () => {
                                 <div className="owner-info">
                                     <h3>{owner.name}</h3>
                                     <p>{owner.email}</p>
-                                    <span className={`status-dot ${owner.status === 'Active' ? 'online' : 'busy'}`} style={{marginTop:'5px'}}></span> 
-                                    <small style={{color: owner.status === 'Active' ? 'green' : 'orange'}}>{owner.status}</small>
+                                    <div style={{display:'flex', alignItems:'center', gap:'5px', marginTop:'5px'}}>
+                                        <span className={`status-dot ${owner.status === 'Active' ? 'online' : 'busy'}`}></span> 
+                                        <small style={{color: owner.status === 'Active' ? 'green' : 'orange'}}>{owner.status}</small>
+                                    </div>
                                 </div>
                             </div>
                             <div className="card-stats-row">
@@ -129,8 +145,13 @@ const OwnersPage = () => {
                                 </div>
                             </div>
                             <div className="card-actions">
-                                <div style={{fontSize:'0.85rem', color:'#64748b'}}><i className="fa-solid fa-phone"></i> {owner.phone}</div>
-                                <button className="btn btn-sm btn-outline">View Profile</button>
+                                <div style={{fontSize:'0.85rem', color:'#64748b'}}>
+                                    <i className="fa-solid fa-phone"></i> {owner.phone}
+                                </div>
+                                {/* CLICKING THIS TRIGGERS THE DETAIL VIEW */}
+                                <button className="btn btn-sm btn-outline" onClick={() => setSelectedOwner(owner)}>
+                                    View Profile
+                                </button>
                             </div>
                         </div>
                     ))}
@@ -150,7 +171,11 @@ const OwnersPage = () => {
                                     <td>{owner.email}</td>
                                     <td>{owner.tables}</td>
                                     <td>KES {owner.revenue.toLocaleString()}</td>
-                                    <td><button className="btn btn-sm btn-outline">Edit</button></td>
+                                    <td>
+                                        <button className="btn btn-sm btn-outline" onClick={() => setSelectedOwner(owner)}>
+                                            View Profile
+                                        </button>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
@@ -192,7 +217,6 @@ const OwnersPage = () => {
                                     <i className="fa-solid fa-envelope input-icon"></i>
                                 </div>
 
-                                {/* Side by side fields on desktop, stacked on mobile */}
                                 <div style={{display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '15px'}}>
                                     <div className="fancy-input-group">
                                         <label>Phone Number</label>
