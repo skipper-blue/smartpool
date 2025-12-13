@@ -1,0 +1,145 @@
+/* src/pages/css/Settlements.css */
+
+/* --- 1. HIGH-END CARDS --- */
+.settlements-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    margin-bottom: 35px;
+}
+
+.money-card {
+    border-radius: 20px;
+    padding: 28px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow: hidden;
+}
+
+.money-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px -5px rgba(0, 0, 0, 0.1);
+}
+
+/* Premium Dark Card (Unpaid Balance) */
+.card-dark {
+    background: radial-gradient(circle at 100% 0%, #334155 0%, #0f172a 100%);
+    color: white;
+    box-shadow: 0 10px 30px -10px rgba(15, 23, 42, 0.5);
+}
+
+/* Premium Green Card (Liquidity) */
+.card-green {
+    background: radial-gradient(circle at 100% 0%, #34d399 0%, #059669 100%);
+    color: white;
+    box-shadow: 0 10px 30px -10px rgba(5, 150, 105, 0.5);
+}
+
+/* Standard Action Card */
+.card-light {
+    background: white;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+.stat-label {
+    font-size: 0.8rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    opacity: 0.8;
+    margin-bottom: 12px;
+}
+
+.stat-val {
+    font-size: 2.4rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+    line-height: 1;
+}
+
+/* --- 2. LIVE INDICATOR --- */
+.live-badge {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.2);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    backdrop-filter: blur(5px);
+}
+
+.blink-dot {
+    width: 8px; height: 8px;
+    background: #4ade80;
+    border-radius: 50%;
+    box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7);
+    animation: pulse-green 2s infinite;
+}
+
+@keyframes pulse-green {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(74, 222, 128, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+/* --- 3. PAYMENT DRAWER --- */
+.drawer-overlay {
+    position: fixed; inset: 0;
+    background: rgba(15, 23, 42, 0.6);
+    backdrop-filter: blur(8px);
+    z-index: 100;
+    display: flex; justify-content: flex-end;
+    animation: fadeIn 0.3s ease;
+}
+
+.drawer-panel {
+    width: 500px;
+    max-width: 100%;
+    background: white;
+    height: 100%;
+    box-shadow: -20px 0 50px rgba(0,0,0,0.2);
+    display: flex; flex-direction: column;
+    animation: slideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.success-view {
+    text-align: center;
+    padding: 40px;
+    animation: scaleIn 0.3s ease;
+}
+
+.success-icon-circle {
+    width: 80px; height: 80px;
+    background: #dcfce7;
+    color: #166534;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    margin: 0 auto 20px auto;
+}
+
+@keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes scaleIn { from { transform: scale(0.9); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* --- 4. BUTTONS & UTILS --- */
+.btn-glossy {
+    background: linear-gradient(to bottom, #2563eb, #1d4ed8);
+    border: 1px solid #1e40af;
+    box-shadow: 0 1px 2px 0 rgba(255,255,255,0.2) inset, 0 4px 6px -1px rgba(37, 99, 235, 0.3);
+    color: white;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+.btn-glossy:hover {
+    filter: brightness(1.1);
+    transform: translateY(-1px);
+}
+.btn-glossy:disabled {
+    filter: grayscale(1);
+    cursor: wait;
+}

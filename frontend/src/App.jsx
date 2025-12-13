@@ -8,6 +8,9 @@ import Dashboard from './pages/Dashboard';
 import OwnersPage from './pages/OwnersPage'; // Ensure you have this file created
 import TablesPage from './pages/TablesPage';
 import ControlCenter from './pages/ControlCenter';
+import Settlements from './pages/Settlements';
+import Settings from './pages/Settings';
+import TransactionsPage from './pages/TransactionPages';
 
 // --- PLACEHOLDER COMPONENT ---
 // This handles pages you haven't built yet (Tables, Settings, etc.)
@@ -61,9 +64,9 @@ function App() {
                 {/* Placeholders for future pages */}
                 {activeTab === 'tables' && <TablesPage/>}
                 {activeTab === 'control' && <ControlCenter />}
-                {activeTab === 'transactions' && <PlaceholderPage title="Transaction History" />}
-                {activeTab === 'settlements' && <PlaceholderPage title="Settlements" />}
-                {activeTab === 'settings' && <PlaceholderPage title="System Settings" />}
+                {activeTab === 'transactions' && <TransactionsPage />}
+                {activeTab === 'settlements' && <Settlements/>}
+                {activeTab === 'settings' && <Settings/>}
             </div>
         </div>
     );
