@@ -6,6 +6,8 @@ import Header from './components/Header';
 // Import your real pages
 import Dashboard from './pages/Dashboard';
 import OwnersPage from './pages/OwnersPage'; // Ensure you have this file created
+import TablesPage from './pages/TablesPage';
+import ControlCenter from './pages/ControlCenter';
 
 // --- PLACEHOLDER COMPONENT ---
 // This handles pages you haven't built yet (Tables, Settings, etc.)
@@ -54,9 +56,11 @@ function App() {
                 {/* 4. THE ROUTER LOGIC: Switch pages based on activeTab */}
                 {activeTab === 'dashboard' && <Dashboard />}
                 {activeTab === 'owners' && <OwnersPage />}
+
                 
                 {/* Placeholders for future pages */}
-                {activeTab === 'tables' && <PlaceholderPage title="Table Management" />}
+                {activeTab === 'tables' && <TablesPage/>}
+                {activeTab === 'control' && <ControlCenter />}
                 {activeTab === 'transactions' && <PlaceholderPage title="Transaction History" />}
                 {activeTab === 'settlements' && <PlaceholderPage title="Settlements" />}
                 {activeTab === 'settings' && <PlaceholderPage title="System Settings" />}

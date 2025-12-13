@@ -1,0 +1,136 @@
+/* src/assets/css/ControlCenter.css */
+
+/* --- LAYOUT --- */
+.control-layout {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 0; /* Seamless border look */
+    height: calc(100vh - 80px);
+    background: #f8fafc;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+/* --- LEFT: SIDEBAR LIST --- */
+.device-list-panel {
+    background: white;
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+}
+
+.device-search { padding: 15px; border-bottom: 1px solid var(--border); }
+.device-list { flex: 1; overflow-y: auto; }
+
+.device-item {
+    padding: 16px;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: pointer;
+    transition: all 0.2s;
+    border-left: 3px solid transparent;
+}
+.device-item:hover { background: #f8fafc; }
+.device-item.active { background: #f0f9ff; border-left-color: var(--primary); }
+
+/* --- RIGHT: MAIN COCKPIT --- */
+.cockpit-panel {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    overflow: hidden;
+}
+
+/* Header */
+.cockpit-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    background: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.header-title h2 { margin: 0; font-size: 1.5rem; }
+.header-meta { color: var(--text-muted); font-size: 0.85rem; margin-top: 4px; }
+.header-status { padding: 5px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+
+/* TABS */
+.cockpit-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+    background: #f8fafc;
+    padding: 0 24px;
+}
+.tab-btn {
+    padding: 14px 20px;
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    color: var(--text-muted);
+    font-weight: 600;
+    transition: all 0.2s;
+}
+.tab-btn:hover { color: var(--text-main); }
+.tab-btn.active { border-bottom-color: var(--primary); color: var(--primary); }
+
+/* CONTENT AREA */
+.cockpit-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 24px;
+    background: #f8fafc;
+}
+
+/* -- WIDGETS -- */
+.widget-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.widget-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: var(--shadow-sm);
+}
+.widget-title { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; margin-bottom: 15px; }
+
+/* Progress Bars */
+.progress-container { margin-bottom: 15px; }
+.progress-label { display: flex; justify-content: space-between; font-size: 0.85rem; margin-bottom: 5px; font-weight: 600; }
+.progress-bar-bg { height: 8px; background: #e2e8f0; border-radius: 4px; overflow: hidden; }
+.progress-fill { height: 100%; transition: width 0.5s ease; }
+
+/* Terminal */
+.terminal-window {
+    background: #0f172a;
+    color: #38bdf8;
+    border-radius: 8px;
+    height: 400px;
+    overflow-y: auto;
+    padding: 15px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9rem;
+    box-shadow: inset 0 0 20px rgba(0,0,0,0.5);
+}
+
+/* Config Forms */
+.config-group { margin-bottom: 20px; }
+.config-group label { display: block; font-size: 0.9rem; margin-bottom: 6px; font-weight: 600; }
+.config-input { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 6px; }
+
+/* Map Placeholder */
+.map-view {
+    height: 300px;
+    background: #e2e8f0;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #64748b;
+    font-weight: 600;
+    background-image: repeating-linear-gradient(45deg, #e2e8f0 0, #e2e8f0 10px, #f1f5f9 10px, #f1f5f9 20px);
+}

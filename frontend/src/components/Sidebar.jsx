@@ -64,8 +64,18 @@ function Sidebar({ activeTab, setActiveTab, isOpen, closeMobileSidebar }) {
                         <i className="fa-solid fa-file-invoice-dollar"></i> Settlements
                     </a>
 
-                    <div className="nav-label">System</div>
                     
+                    <div className="nav-label">System</div>
+
+                    {/* NEW: Control Center Link */}
+                    <a 
+                        className={`nav-item ${activeTab === 'control' ? 'active' : ''}`} 
+                        onClick={() => handleNavigation('control')}
+                    >
+                        <i className="fa-solid fa-gamepad"></i> Control Center
+                    </a>
+
+                    {/* Existing Settings Link */}
                     <a 
                         className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`} 
                         onClick={() => handleNavigation('settings')}
