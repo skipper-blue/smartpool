@@ -1,58 +1,66 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import './App.css';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import './App.css'; 
-import Dashboard from './pages/Dashboard';
 
+// Import your real pages
+import Dashboard from './pages/Dashboard';
+import OwnersPage from './pages/OwnersPage'; // Ensure you have this file created
+
+// --- PLACEHOLDER COMPONENT ---
+// This handles pages you haven't built yet (Tables, Settings, etc.)
+// so the app doesn't crash when you click them.
+const PlaceholderPage = ({ title }) => (
+    <div className="scroll-area fade-in">
+        <div style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>
+            <div style={{ fontSize: '3rem', marginBottom: '20px', opacity: 0.5 }}>
+                <i className="fa-solid fa-screwdriver-wrench"></i>
+            </div>
+            <h2 style={{ color: '#0f172a' }}>{title}</h2>
+            <p>This module is under construction.</p>
+        </div>
+    </div>
+);
 
 function App() {
-    // Default to true (open) on desktop, false (closed) on mobile
-    const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 900);
+    // 1. State to track which page is currently active
     const [activeTab, setActiveTab] = useState('dashboard');
-    
-    // Use this ONLY if you want the sidebar to close even on big screens
-    const handleNavigation = (viewId) => {
-        setActiveTab(viewId);
-        closeMobileSidebar(); // This will close it regardless of screen size
-    };
+    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-    // Handle window resize to auto-close on mobile
-    useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth <= 900) setIsSidebarOpen(false);
-            else setIsSidebarOpen(true);
-        };
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+    // Toggle Sidebar (Mobile)
+    const toggleSidebar = () => setIsSidebarOpen(!isSidebarOpen);
 
-    const toggleSidebar = () => {
-        setIsSidebarOpen(!isSidebarOpen);
-    };
+    // Close Sidebar (Mobile) when a link is clicked
+    const closeMobileSidebar = () => setIsSidebarOpen(false);
 
     return (
         <div className="app-container">
-            {/* Sidebar Logic */}
-           
+            {/* 2. Navigation Sidebar */}
             <Sidebar 
                 activeTab={activeTab} 
-                setActiveTab={setActiveTab}
+                setActiveTab={setActiveTab} 
                 isOpen={isSidebarOpen} 
-                // This function tells the state to set isSidebarOpen to false
-                closeMobileSidebar={() => setIsSidebarOpen(false)} 
+                closeMobileSidebar={closeMobileSidebar}
             />
 
-            {/* Main Content Logic */}
-            <main className={`main-content ${isSidebarOpen ? '' : 'full-width'}`}>
-                
+            {/* 3. Main Content Area */}
+            <div className="main-content">
                 <Header 
                     title={activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} 
-                    toggleSidebar={toggleSidebar}
+                    toggleSidebar={toggleSidebar} 
                     isSidebarOpen={isSidebarOpen}
                 />
 
-                <Dashboard/>
-            </main>
+                {/* 4. THE ROUTER LOGIC: Switch pages based on activeTab */}
+                {activeTab === 'dashboard' && <Dashboard />}
+                {activeTab === 'owners' && <OwnersPage />}
+                
+                {/* Placeholders for future pages */}
+                {activeTab === 'tables' && <PlaceholderPage title="Table Management" />}
+                {activeTab === 'transactions' && <PlaceholderPage title="Transaction History" />}
+                {activeTab === 'settlements' && <PlaceholderPage title="Settlements" />}
+                {activeTab === 'settings' && <PlaceholderPage title="System Settings" />}
+            </div>
         </div>
     );
 }
