@@ -1,0 +1,40 @@
+/* The container that allows vertical scrolling */
+.scroll-area {
+    flex: 1;                 /* Fills all space below the Header */
+    overflow-y: auto;        /* Enables Vertical Scrolling */
+    padding: 30px;
+    height: 100%;
+    
+    /* Smooth momentum scrolling for iOS */
+    -webkit-overflow-scrolling: touch; 
+    
+    /* Animation */
+    animation: fadeIn 0.4s ease-out;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* Grid Layout for Cards */
+.grid-3 {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+    margin-bottom: 24px;
+}
+
+/* --- Mobile Responsive Adjustments --- */
+@media (max-width: 900px) {
+    .scroll-area {
+        padding: 15px;       /* Smaller padding on mobile */
+        /* Crucial: Add bottom padding so content isn't hidden behind browser nav bars */
+        padding-bottom: 100px; 
+    }
+
+    .grid-3 {
+        grid-template-columns: 1fr; /* Stack cards vertically */
+        gap: 15px;
+    }
+}

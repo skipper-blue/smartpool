@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
 import './App.css'; 
+import Dashboard from './pages/Dashboard';
+
 
 function App() {
     // Default to true (open) on desktop, false (closed) on mobile
@@ -49,11 +51,7 @@ function App() {
                     isSidebarOpen={isSidebarOpen}
                 />
 
-                <div className="content-body">
-                    <h1>Admin Dashboard</h1>
-                    <p>Sidebar is currently: <b>{isSidebarOpen ? 'Open' : 'Hidden'}</b></p>
-                    <p>Click the button in the top left to toggle it.</p>
-                </div>
+                <Dashboard/>
             </main>
         </div>
     );

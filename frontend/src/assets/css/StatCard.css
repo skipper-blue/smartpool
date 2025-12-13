@@ -1,0 +1,114 @@
+/* src/assets/css/StatCard.css */
+
+.card {
+    position: relative;
+    background: #ffffff;
+    border-radius: 16px; /* Rounder corners are more modern */
+    padding: 24px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 
+                0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    overflow: hidden; /* Keeps the decoration inside */
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+/* Hover Effect: Lift and Glow */
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 
+                0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    border-color: rgba(79, 70, 229, 0.3); /* Slight purple tint on hover */
+}
+
+/* --- Typography --- */
+.stat-label {
+    font-size: 0.85rem;
+    color: #64748b; /* Slate 500 */
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 8px;
+}
+
+.stat-val {
+    font-size: 2.2rem; /* Bigger and bolder */
+    font-weight: 800;
+    color: #1e293b; /* Slate 800 */
+    margin: 4px 0 12px 0;
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: baseline;
+}
+
+.stat-subval {
+    font-size: 1rem;
+    color: #94a3b8;
+    font-weight: 500;
+    margin-left: 8px;
+}
+
+/* --- Trends --- */
+.trend {
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 20px; /* Pill shape */
+    width: fit-content;
+}
+
+.trend.up {
+    background-color: #ecfdf5; /* Light green bg */
+    color: #059669; /* Green text */
+}
+
+.trend.down {
+    background-color: #fef2f2;
+    color: #dc2626;
+}
+
+.trend.warning {
+    background-color: #fffbeb;
+    color: #d97706;
+}
+
+/* --- Empty State Styling --- */
+.card.is-empty {
+    background: #f8fafc; /* Very light grey */
+    border-style: dashed; /* Dashed border suggests "fill me" */
+}
+
+.card.is-empty .stat-val {
+    color: #cbd5e1; /* Light grey text */
+}
+
+.trend.muted {
+    background-color: #f1f5f9;
+    color: #94a3b8;
+}
+
+.dot-indicator {
+    height: 6px;
+    width: 6px;
+    background-color: #cbd5e1;
+    border-radius: 50%;
+    margin-right: 8px;
+}
+
+/* --- Decorative Element (The "Fancy" Gradient Blob) --- */
+.card-decoration {
+    position: absolute;
+    top: -50px;
+    right: -50px;
+    width: 100px;
+    height: 100px;
+    background: linear-gradient(135deg, rgba(79, 70, 229, 0.1) 0%, rgba(147, 51, 234, 0.05) 100%);
+    border-radius: 50%;
+    filter: blur(40px);
+    z-index: 0;
+    pointer-events: none;
+}

@@ -1,0 +1,114 @@
+/* src/assets/css/Theme.css */
+
+/* 1. Import Google Font (Inter) for that clean, modern SaaS look */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    /* --- BRAND COLORS (Modern Indigo) --- */
+    --primary: #4f46e5;       /* Indigo 600 - Main Brand Color */
+    --primary-dark: #4338ca;  /* Indigo 700 - Hover State */
+    --primary-light: #e0e7ff; /* Indigo 100 - Subtle Backgrounds */
+    --accent: #8b5cf6;        /* Violet 500 - Secondary Accent */
+
+    /* --- NEUTRALS & BACKGROUNDS --- */
+    --bg-background: #f8fafc; /* Slate 50 - The main app background (very light grey) */
+    --bg-surface: #ffffff;    /* Pure White - Card & Sidebar background */
+    --border: #e2e8f0;        /* Slate 200 - Subtle borders */
+    --border-hover: #cbd5e1;  /* Slate 300 - Border on hover */
+
+    /* --- TEXT COLORS --- */
+    --text-main: #0f172a;     /* Slate 900 - Headings (Not pure black) */
+    --text-secondary: #334155;/* Slate 700 - Normal Body text */
+    --text-muted: #64748b;    /* Slate 500 - Labels, Dates, Subtitles */
+    --text-inverted: #ffffff; /* White text on dark buttons */
+
+    /* --- STATUS COLORS (Pill Badges) --- */
+    /* Success (Green) */
+    --success: #10b981;       
+    --success-bg: #ecfdf5;
+    
+    /* Warning (Amber/Orange) */
+    --warning: #f59e0b;       
+    --warning-bg: #fffbeb;
+    
+    /* Danger (Red) */
+    --danger: #ef4444;        
+    --danger-bg: #fef2f2;
+    
+    /* Info (Blue) */
+    --info: #3b82f6;
+    --info-bg: #eff6ff;
+
+    /* --- UI VARIABLES (The "Feel") --- */
+    --radius: 16px;           /* Rounder corners = More modern */
+    --radius-sm: 8px;         /* For buttons and inputs */
+    
+    /* Soft Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* --- GLOBAL RESETS --- */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-background);
+    color: var(--text-secondary);
+    -webkit-font-smoothing: antialiased; /* Makes fonts look sharper on Mac */
+    -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-main);
+    margin-top: 0;
+}
+
+/* --- GLOBAL UTILITY: BUTTONS --- */
+/* This ensures any <button className="btn"> looks consistent */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 20px;
+    border-radius: var(--radius-sm);
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    gap: 8px;
+}
+
+.btn-primary {
+    background-color: var(--primary);
+    color: var(--text-inverted);
+    box-shadow: 0 4px 6px rgba(79, 70, 229, 0.25); /* Colored shadow glow */
+}
+
+.btn-primary:hover {
+    background-color: var(--primary-dark);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 10px rgba(79, 70, 229, 0.3);
+}
+
+/* Scrollbar Styling (Optional but nice) */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #94a3b8;
+}
