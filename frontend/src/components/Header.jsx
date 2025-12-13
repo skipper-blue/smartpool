@@ -2,35 +2,48 @@ import React from 'react';
 import '../assets/css/Header.css';
 
 function Header({ title, toggleSidebar, isSidebarOpen }) {
+    
+    // Logic to generate the date format: "Sunday, Nov 30, 2025"
+    const formattedDate = new Date().toLocaleDateString('en-US', {
+        weekday: 'long', 
+        month: 'short', 
+        day: 'numeric', 
+        year: 'numeric'
+    });
+
     return (
         <header className="top-header">
-            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
+            
+            {/* LEFT SIDE: Toggle Button + Title + Date */}
+            <div className="header-left">
                 
-                {/* --- TOGGLE BUTTON --- 
-                    This single button handles both Desktop and Mobile interactions.
-                    - Desktop: Collapses/Expands sidebar
-                    - Mobile: Opens the sidebar overlay
-                */}
+                {/* Toggle Button */}
                 <button className="toggle-btn" onClick={toggleSidebar}>
-                    {/* Logic: 
-                        If sidebar is open, show 'align-left' (collapse icon).
-                        If sidebar is closed (or on mobile), show 'bars'. 
-                    */}
                     <i className={`fa-solid ${isSidebarOpen ? 'fa-align-left' : 'fa-bars'}`}></i>
                 </button>
 
-                <div className="page-title">
+                {/* Page Title & Date Stack */}
+                <div className="page-info">
                     <h2 id="page-header">{title}</h2>
-                    {/* Optional: Add date here if needed */}
+                    <span id="current-date">{formattedDate}</span>
                 </div>
             </div>
 
-            <div className="user-menu">
-                <div className="icon-btn">
-                    <i className="fa-regular fa-bell"></i>
-                    <div className="badge"></div>
+            {/* RIGHT SIDE: Notifications + Avatar */}
+            <div className="header-right">
+                
+                {/* Notification Bell with Red Dot */}
+                <div className="notification-wrapper">
+                    <button className="icon-btn">
+                        <i className="fa-regular fa-bell"></i>
+                    </button>
+                    <span className="badge-dot"></span>
                 </div>
-                <div className="avatar">AD</div>
+
+                {/* User Avatar */}
+                <div className="user-profile">
+                    <div className="avatar">SA</div>
+                </div>
             </div>
         </header>
     );
