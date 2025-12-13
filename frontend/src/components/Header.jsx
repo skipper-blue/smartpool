@@ -1,31 +1,27 @@
 import React from 'react';
 import '../assets/css/Header.css';
 
-function Header({ title, toggleSidebar }) {
-    
-    // Optional: Dynamic Date logic to replace the hardcoded HTML
-    const currentDate = new Date().toLocaleDateString('en-US', {
-        weekday: 'long', 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric'
-    });
-
+function Header({ title, toggleSidebar, isSidebarOpen }) {
     return (
         <header className="top-header">
-            {/* Inline styles in React must be objects, not strings */}
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '15px' }}>
                 
-                {/* 1. use onClick (camelCase) 
-                    2. call the function passed via props */}
+                {/* --- TOGGLE BUTTON --- 
+                    This single button handles both Desktop and Mobile interactions.
+                    - Desktop: Collapses/Expands sidebar
+                    - Mobile: Opens the sidebar overlay
+                */}
                 <button className="toggle-btn" onClick={toggleSidebar}>
-                    <i className="fa-solid fa-bars"></i>
+                    {/* Logic: 
+                        If sidebar is open, show 'align-left' (collapse icon).
+                        If sidebar is closed (or on mobile), show 'bars'. 
+                    */}
+                    <i className={`fa-solid ${isSidebarOpen ? 'fa-align-left' : 'fa-bars'}`}></i>
                 </button>
-                
+
                 <div className="page-title">
-                    {/* Display the title passed from parent state */}
                     <h2 id="page-header">{title}</h2>
-                    <span id="current-date">{currentDate}</span>
+                    {/* Optional: Add date here if needed */}
                 </div>
             </div>
 
@@ -34,7 +30,7 @@ function Header({ title, toggleSidebar }) {
                     <i className="fa-regular fa-bell"></i>
                     <div className="badge"></div>
                 </div>
-                <div className="avatar">SA</div>
+                <div className="avatar">AD</div>
             </div>
         </header>
     );

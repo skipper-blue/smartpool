@@ -1,14 +1,15 @@
 import React from 'react';
 import '../assets/css/sidebar.css';
 
-// We accept props to control the state from the parent
-function Sidebar({ activeTab, setActiveTab, isMobileOpen, closeMobileSidebar }) {
+function Sidebar({ activeTab, setActiveTab, isOpen, closeMobileSidebar }) {
     
-    // Helper to handle click
+    // --- THE LOGIC ---
     const handleNavigation = (viewId) => {
+        // 1. Switch the Page View
         setActiveTab(viewId);
         
-        // Mobile handling: close sidebar if screen is small
+        // 2. Check screen size and close sidebar if on mobile
+        // (We assume mobile is 900px or less based on your CSS)
         if (window.innerWidth <= 900) {
             closeMobileSidebar();
         }
@@ -16,9 +17,7 @@ function Sidebar({ activeTab, setActiveTab, isMobileOpen, closeMobileSidebar }) 
 
     return (
         <>
-            {/* Add the 'show' class conditionally based on the isMobileOpen prop 
-            */}
-            <aside className={`sidebar ${isMobileOpen ? 'show' : ''}`} id="sidebar">
+            <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`} id="sidebar">
                 <div className="brand">
                     <i className="fa-solid fa-billiards"></i> SMARTPOOL
                 </div>
@@ -26,6 +25,8 @@ function Sidebar({ activeTab, setActiveTab, isMobileOpen, closeMobileSidebar }) 
                 <div className="nav-scroller">
                     <div className="nav-label">Management</div>
                     
+                    {/* Use arrow functions to pass the ID to handleNavigation 
+                    */}
                     <a 
                         className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`} 
                         onClick={() => handleNavigation('dashboard')}
@@ -74,10 +75,9 @@ function Sidebar({ activeTab, setActiveTab, isMobileOpen, closeMobileSidebar }) 
                 </div>
             </aside>
 
-            {/* Overlay for mobile view */}
+            {/* Overlay to close sidebar when clicking outside */}
             <div 
-                id="overlay" 
-                className={isMobileOpen ? 'show' : ''} 
+                className={`sidebar-overlay ${isOpen ? 'show' : ''}`}
                 onClick={closeMobileSidebar}
             ></div>
         </>

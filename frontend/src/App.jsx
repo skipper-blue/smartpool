@@ -1,44 +1,59 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Sidebar from './components/Sidebar';
 import Header from './components/Header';
-import './App.css'; // Import the CSS from above
+import './App.css'; 
 
 function App() {
-    const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+    // Default to true (open) on desktop, false (closed) on mobile
+    const [isSidebarOpen, setIsSidebarOpen] = useState(window.innerWidth > 900);
     const [activeTab, setActiveTab] = useState('dashboard');
+    
+    // Use this ONLY if you want the sidebar to close even on big screens
+    const handleNavigation = (viewId) => {
+        setActiveTab(viewId);
+        closeMobileSidebar(); // This will close it regardless of screen size
+    };
+
+    // Handle window resize to auto-close on mobile
+    useEffect(() => {
+        const handleResize = () => {
+            if (window.innerWidth <= 900) setIsSidebarOpen(false);
+            else setIsSidebarOpen(true);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
     const toggleSidebar = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
     return (
-        // 1. The Flex Container
         <div className="app-container">
-            
-            {/* 2. Left Side: Sidebar */}
+            {/* Sidebar Logic */}
+           
             <Sidebar 
                 activeTab={activeTab} 
                 setActiveTab={setActiveTab}
-                isMobileOpen={isSidebarOpen} 
-                closeMobileSidebar={() => setIsSidebarOpen(false)}
+                isOpen={isSidebarOpen} 
+                // This function tells the state to set isSidebarOpen to false
+                closeMobileSidebar={() => setIsSidebarOpen(false)} 
             />
 
-            {/* 3. Right Side: Wrapper for Header + Content */}
-            <main className="main-content">
+            {/* Main Content Logic */}
+            <main className={`main-content ${isSidebarOpen ? '' : 'full-width'}`}>
                 
-                {/* A. Header at the top */}
                 <Header 
                     title={activeTab.charAt(0).toUpperCase() + activeTab.slice(1)} 
-                    toggleSidebar={toggleSidebar} 
+                    toggleSidebar={toggleSidebar}
+                    isSidebarOpen={isSidebarOpen}
                 />
 
-                {/* B. Scrollable Content Body below Header */}
                 <div className="content-body">
-                    {/* Your dynamic content goes here */}
-                    <h1>Welcome to {activeTab}</h1>
-                    <p>This area will scroll while the sidebar and header stay in place.</p>
+                    <h1>Admin Dashboard</h1>
+                    <p>Sidebar is currently: <b>{isSidebarOpen ? 'Open' : 'Hidden'}</b></p>
+                    <p>Click the button in the top left to toggle it.</p>
                 </div>
-
             </main>
         </div>
     );
