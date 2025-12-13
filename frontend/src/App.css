@@ -110,28 +110,37 @@ h1, h2, h3, h4, h5, h6 {
     background: #94a3b8;
 }
 
+
 .app-container {
     display: flex;
-    height: 100vh;        /* Forces app to exactly fill the screen height */
+    height: 100vh; /* Force full viewport height */
     width: 100vw;
-    overflow: hidden;     /* Prevents the outer window from scrolling */
-    background-color: var(--bg-background);
+    background-color: #f8fafc; /* Light grey background */
+    overflow: hidden; /* Prevent body scroll, handle it inside sections */
 }
 
 .main-content {
-    flex: 1;              /* Takes all remaining width next to sidebar */
+    flex: 1;
     display: flex;
     flex-direction: column;
-    height: 100%;         /* Full height of parent */
-    overflow: hidden;     /* Prevents double scrollbars */
-    position: relative;
-    transition: margin-left 0.3s ease;
+    height: 100vh;
+    overflow-y: auto; /* THIS ENABLES SCROLLING */
+    padding: 20px;
+    padding-bottom: 80px; /* Extra space at bottom so content isn't cut off */
+    scroll-behavior: smooth;
 }
 
-/* Mobile: Main content takes full width */
-@media (max-width: 900px) {
-    .main-content {
-        width: 100%;
-        margin-left: 0;
-    }
+/* Custom Scrollbar for Webkit (Chrome/Safari) */
+.main-content::-webkit-scrollbar {
+    width: 8px;
+}
+.main-content::-webkit-scrollbar-track {
+    background: transparent;
+}
+.main-content::-webkit-scrollbar-thumb {
+    background-color: #cbd5e1;
+    border-radius: 4px;
+}
+.main-content::-webkit-scrollbar-thumb:hover {
+    background-color: #94a3b8;
 }

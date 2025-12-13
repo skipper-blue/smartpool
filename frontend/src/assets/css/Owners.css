@@ -1,84 +1,318 @@
 /* src/assets/css/Owners.css */
 
-.section {
-    background: var(--bg-surface);
-    border-radius: var(--radius);
+/* =========================================
+   1. TOP STATS HEADER
+   ========================================= */
+.owners-header-stats {
+    display: grid;
+    /* Responsive columns: At least 240px wide, fitting as many as possible */
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.stat-card-fancy {
+    background: linear-gradient(135deg, #ffffff 0%, #f8fafc 100%);
     padding: 24px;
-    box-shadow: var(--shadow-sm);
-    animation: fadeIn 0.4s ease-out;
+    border-radius: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    /* Soft, multi-layered shadow for depth */
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 10px 15px -3px rgba(0, 0, 0, 0.05);
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
-/* Header Alignment */
-.section h3 {
-    margin: 0;
-    font-size: 1.25rem;
-    color: var(--text-main);
+.stat-card-fancy:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 15px 25px -5px rgba(0, 0, 0, 0.08);
 }
 
-/* Table Wrapper */
-.table-wrapper {
-    margin-top: 10px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    overflow: hidden; /* Clips corners */
+.stat-icon-box {
+    width: 54px;
+    height: 54px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.6rem;
+    flex-shrink: 0;
 }
 
-.responsive-table {
-    width: 100%;
-    overflow-x: auto;
+/* =========================================
+   2. TOOLBAR & SEARCH
+   ========================================= */
+.toolbar-fancy {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+    background: white;
+    padding: 12px 20px;
+    border-radius: 14px;
+    border: 1px solid #e2e8f0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    flex-wrap: wrap; /* Allows wrapping on small screens */
+    gap: 15px;
 }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
+.search-fancy {
+    background: #f1f5f9;
+    border: 1px solid transparent;
+    padding: 10px 15px;
+    border-radius: 10px;
+    width: 300px;
+    outline: none;
+    transition: all 0.2s;
     font-size: 0.95rem;
 }
 
-/* Table Header */
-thead {
-    background-color: var(--bg-background);
-    border-bottom: 1px solid var(--border);
-}
-
-th {
-    padding: 14px 16px;
-    text-align: left;
-    font-weight: 600;
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
-}
-
-/* Table Body */
-td {
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--border);
-    color: var(--text-secondary);
-}
-
-tr:last-child td {
-    border-bottom: none;
-}
-
-tr:hover {
-    background-color: var(--bg-background);
-}
-
-/* Buttons */
-.btn-sm {
-    padding: 6px 12px;
-    font-size: 0.8rem;
-}
-
-.btn-outline {
-    background: transparent;
-    border: 1px solid var(--border);
-    color: var(--text-secondary);
-}
-
-.btn-outline:hover {
+.search-fancy:focus {
+    background: white;
     border-color: var(--primary);
+    box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+.filter-badge {
+    background: #f1f5f9;
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #475569;
+}
+
+/* =========================================
+   3. GRID VIEW (OWNER CARDS)
+   ========================================= */
+.owners-grid {
+    display: grid;
+    /* Responsive Grid Logic */
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 24px;
+}
+
+.owner-card {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid #e2e8f0;
+    padding: 24px;
+    position: relative;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    overflow: hidden;
+}
+
+.owner-card:hover {
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    transform: translateY(-4px);
+    border-color: var(--primary-light);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.avatar-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary) 0%, #3b82f6 100%);
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #f0f9ff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.owner-info h3 { margin: 0; font-size: 1.1rem; color: #1e293b; font-weight: 700; }
+.owner-info p { margin: 2px 0 0; font-size: 0.85rem; color: #64748b; }
+
+.card-stats-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    padding: 16px 0;
+    border-top: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f1f5f9;
+    margin-bottom: 16px;
+}
+
+.mini-stat { text-align: center; }
+.mini-stat label { display: block; font-size: 0.7rem; color: #94a3b8; text-transform: uppercase; font-weight: 700; letter-spacing: 0.5px; }
+.mini-stat span { font-size: 1.15rem; font-weight: 800; color: #334155; }
+
+.card-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* =========================================
+   4. HD SLIDE-OVER DRAWER (RESPONSIVE)
+   ========================================= */
+.drawer-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.4); /* Dark blue tint */
+    backdrop-filter: blur(4px); /* The "Glass" blur effect */
+    z-index: 1050;
+    animation: fadeIn 0.3s forwards;
+}
+
+.slide-over-panel {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: 100%; /* Default to full width for mobile safety */
+    max-width: 480px; /* Cap width for Desktop */
+    background: #ffffff;
+    z-index: 1051;
+    box-shadow: -10px 0 30px rgba(0,0,0,0.15);
+    display: flex;
+    flex-direction: column;
+    /* Slide in animation */
+    animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.panel-header {
+    padding: 24px;
+    background: linear-gradient(135deg, var(--primary) 0%, #2563eb 100%);
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+}
+
+.panel-body {
+    padding: 30px;
+    flex: 1;
+    overflow-y: auto;
+    scroll-behavior: smooth;
+}
+
+.panel-footer {
+    padding: 20px 30px;
+    border-top: 1px solid #e2e8f0;
+    background: #f8fafc;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+/* =========================================
+   5. HD FORM ELEMENTS (INPUTS)
+   ========================================= */
+.fancy-input-group {
+    margin-bottom: 24px;
+    position: relative;
+}
+
+.fancy-input-group label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 8px;
+    letter-spacing: 0.02em;
+}
+
+.fancy-input {
+    width: 100%;
+    padding: 14px 16px;
+    padding-left: 44px; /* Space reserved for the icon */
+    border: 1px solid #cbd5e1;
+    border-radius: 10px;
+    font-size: 0.95rem;
+    color: #1e293b;
+    background: #ffffff;
+    transition: all 0.25s ease;
+}
+
+.fancy-input::placeholder {
+    color: #94a3b8;
+}
+
+/* The HD Glow Effect on Focus */
+.fancy-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.15); /* Soft blue glow */
+    outline: none;
+}
+
+/* Positioning the Icon inside the input */
+.input-icon {
+    position: absolute;
+    left: 16px;
+    /* Calculated: Label height + margin + (Input height / 2) - (Icon height / 2) */
+    /* Approx top: 40-42px depending on label size */
+    top: 41px; 
+    color: #94a3b8;
+    font-size: 1rem;
+    pointer-events: none; /* Allows clicking through the icon */
+    transition: color 0.2s;
+}
+
+/* Change icon color when input is focused */
+.fancy-input:focus ~ .input-icon,
+.fancy-input:focus + .input-icon {
     color: var(--primary);
-    background-color: var(--primary-light);
+}
+
+/* Helper for Buttons */
+.btn-sm { padding: 6px 12px; font-size: 0.85rem; border-radius: 6px; }
+.status-dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; margin-right: 6px; }
+.status-dot.online { background-color: #10b981; box-shadow: 0 0 0 2px #d1fae5; }
+.status-dot.busy { background-color: #f59e0b; box-shadow: 0 0 0 2px #fef3c7; }
+
+/* =========================================
+   6. RESPONSIVE MEDIA QUERIES
+   ========================================= */
+@keyframes slideInRight {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in-up { animation: fadeInUp 0.4s ease forwards; }
+
+/* Mobile Phones (Portrait) */
+@media (max-width: 480px) {
+    .owners-header-stats {
+        grid-template-columns: 1fr; /* Stack stats vertically */
+    }
+    
+    .toolbar-fancy {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-fancy {
+        width: 100%; /* Full width search */
+    }
+    
+    .slide-over-panel {
+        max-width: 100%; /* Full screen drawer */
+    }
+    
+    .panel-body {
+        padding: 20px;
+    }
 }
