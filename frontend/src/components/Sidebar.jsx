@@ -1,15 +1,12 @@
 import React from 'react';
 import '../assets/css/sidebar.css';
+// Ensure this path matches your actual file (jpg, png, or svg)
+import logo from '../assets/img/logo.jpg'; 
 
 function Sidebar({ activeTab, setActiveTab, isOpen, closeMobileSidebar }) {
     
-    // --- THE LOGIC ---
     const handleNavigation = (viewId) => {
-        // 1. Switch the Page View
         setActiveTab(viewId);
-        
-        // 2. Check screen size and close sidebar if on mobile
-        // (We assume mobile is 900px or less based on your CSS)
         if (window.innerWidth <= 900) {
             closeMobileSidebar();
         }
@@ -18,15 +15,16 @@ function Sidebar({ activeTab, setActiveTab, isOpen, closeMobileSidebar }) {
     return (
         <>
             <aside className={`sidebar ${isOpen ? 'open' : 'closed'}`} id="sidebar">
-                <div className="brand">
-                    <i className="fa-solid fa-billiards"></i> SMARTPOOL
+                
+                {/* --- LOGO ONLY SECTION --- */}
+                <div className="brand-centered">
+                    <img src={logo} alt="SmartPool" className="sidebar-logo-main" />
                 </div>
+                {/* ------------------------- */}
 
                 <div className="nav-scroller">
                     <div className="nav-label">Management</div>
                     
-                    {/* Use arrow functions to pass the ID to handleNavigation 
-                    */}
                     <a 
                         className={`nav-item ${activeTab === 'dashboard' ? 'active' : ''}`} 
                         onClick={() => handleNavigation('dashboard')}
@@ -63,11 +61,9 @@ function Sidebar({ activeTab, setActiveTab, isOpen, closeMobileSidebar }) {
                     >
                         <i className="fa-solid fa-file-invoice-dollar"></i> Settlements
                     </a>
-
                     
                     <div className="nav-label">System</div>
 
-                    {/* NEW: Control Center Link */}
                     <a 
                         className={`nav-item ${activeTab === 'control' ? 'active' : ''}`} 
                         onClick={() => handleNavigation('control')}
@@ -75,7 +71,6 @@ function Sidebar({ activeTab, setActiveTab, isOpen, closeMobileSidebar }) {
                         <i className="fa-solid fa-gamepad"></i> Control Center
                     </a>
 
-                    {/* Existing Settings Link */}
                     <a 
                         className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`} 
                         onClick={() => handleNavigation('settings')}
@@ -85,7 +80,6 @@ function Sidebar({ activeTab, setActiveTab, isOpen, closeMobileSidebar }) {
                 </div>
             </aside>
 
-            {/* Overlay to close sidebar when clicking outside */}
             <div 
                 className={`sidebar-overlay ${isOpen ? 'show' : ''}`}
                 onClick={closeMobileSidebar}

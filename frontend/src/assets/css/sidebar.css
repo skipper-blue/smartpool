@@ -10,12 +10,39 @@
     transition: all 0.3s ease-in-out; /* Smooth sliding animation */
     z-index: 1000;
     
-    /* Logic for Fixed Sidebar Scrolling */
+    /* Scroll Logic */
     overflow-y: auto;
-    border-right: 1px solid rgba(255, 255, 255, 0.1);
+    border-right: 1px solid rgba(255, 255, 255, 0.02);
+    box-shadow: 4px 0 10px rgba(0,0,0,0.1);
 }
 
-/* --- Toggle States --- */
+/* --- LOGO SECTION (Perfectly Placed) --- */
+
+/* 1. The Container: Centers the logo and gives spacing */
+.brand-centered {
+    display: flex;
+    justify-content: center; /* Horizontally Center */
+    align-items: center;     /* Vertically Center */
+    
+    /* Spacing: Top, Left/Right, Bottom */
+    padding: 40px 20px 30px; 
+    
+    margin-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Subtle divider line */
+}
+
+/* 2. The Image: Controls size and aspect ratio */
+.sidebar-logo-main {
+    width: auto;            /* Maintain aspect ratio */
+    height: auto;           /* Let max-height control the size */
+    max-height: 80px;       /* Maximum height allowed (adjust if needed) */
+    max-width: 100%;        /* Ensure it never overflows width */
+    object-fit: contain;    /* Keeps image sharp */
+    border-radius: 8px;     /* Slight curve on corners */
+}
+
+
+/* --- Toggle States (Desktop) --- */
 /* State: OPEN */
 .sidebar.open {
     margin-left: 0;
@@ -26,53 +53,40 @@
     margin-left: -250px;
 }
 
-/* --- Brand Section --- */
-.brand {
-    height: 60px; /* Matches Header Height */
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #3b82f6; /* Accent Blue */
-    background-color: rgba(0, 0, 0, 0.1);
-    letter-spacing: 1px;
-}
-
-.brand i {
-    margin-right: 10px;
-    font-size: 1.4rem;
-}
 
 /* --- Navigation Items --- */
 .nav-scroller {
-    padding: 15px 0;
+    padding: 10px 0;
+    flex: 1; /* Ensures this section takes up remaining height */
 }
 
 .nav-label {
-    padding: 15px 20px 5px;
-    font-size: 0.75rem;
+    padding: 20px 25px 10px; /* Added slight left padding for alignment */
+    font-size: 0.7rem;
     text-transform: uppercase;
     color: #64748b; /* Muted text color */
-    font-weight: 600;
-    letter-spacing: 0.5px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
 }
 
 .nav-item {
     display: flex;
     align-items: center;
-    padding: 12px 20px;
-    color: #cbd5e1; /* Light grey text */
+    padding: 14px 25px; /* Comfortable click area */
+    color: #cbd5e1;     /* Light grey text */
     text-decoration: none;
     cursor: pointer;
-    transition: all 0.2s;
-    border-left: 3px solid transparent;
+    transition: all 0.2s ease;
+    border-left: 3px solid transparent; /* Invisible border for active state */
+    font-size: 0.95rem;
 }
 
 .nav-item i {
     width: 25px;
-    margin-right: 10px;
+    margin-right: 12px;
     text-align: center;
+    font-size: 1.1rem;
+    transition: transform 0.2s;
 }
 
 /* Hover State */
@@ -81,12 +95,18 @@
     color: #fff;
 }
 
+.nav-item:hover i {
+    transform: translateX(3px); /* Subtle icon movement on hover */
+}
+
 /* Active State */
 .nav-item.active {
-    background-color: rgba(59, 130, 246, 0.1); /* Light Blue Tint */
+    background-color: rgba(59, 130, 246, 0.1); /* Accent Blue Tint */
     color: #60a5fa; /* Blue Text */
     border-left-color: #60a5fa; /* Blue Border Indicator */
+    font-weight: 600;
 }
+
 
 /* --- Mobile Overlay --- */
 .sidebar-overlay {
@@ -95,12 +115,14 @@
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5); /* Semi-transparent black */
-    z-index: 900; /* Behind sidebar (1000) but above content */
+    background: rgba(0, 0, 0, 0.6); /* Slightly darker for focus */
+    backdrop-filter: blur(2px);     /* Modern blur effect */
+    z-index: 900; 
     opacity: 0;
     visibility: hidden;
-    transition: all 0.3s;
+    transition: all 0.3s ease;
 }
+
 
 /* --- Mobile Responsiveness --- */
 @media (max-width: 900px) {
@@ -109,18 +131,18 @@
         top: 0;
         left: 0;
         height: 100%;
-        box-shadow: 4px 0 15px rgba(0, 0, 0, 0.2);
+        box-shadow: 5px 0 25px rgba(0, 0, 0, 0.3); /* Stronger shadow on mobile */
     }
 
-    /* Logic: Default to closed on mobile */
+    /* Logic: Default to closed on mobile using Transform (Better performance) */
     .sidebar.closed {
-        transform: translateX(-100%); /* Alternative to margin-left for smoother mobile performance */
-        margin-left: 0;
+        transform: translateX(-100%);
+        margin-left: 0; /* Reset desktop logic */
     }
     
     .sidebar.open {
         transform: translateX(0);
-        margin-left: 0;
+        margin-left: 0; /* Reset desktop logic */
     }
 
     /* Show overlay only on mobile when open */
