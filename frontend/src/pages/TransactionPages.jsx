@@ -1,17 +1,10 @@
 import React, { useState, useMemo } from 'react';
 import '../assets/css/Transactions.css';
+import { mockData } from '../data/mockData';
 
 const TransactionsPage = () => {
-    // --- MOCK DATA ---
-    const [transactions] = useState([
-        { id: 'TX-1001', code: 'QGH12399AA', date: '2023-11-30 14:32', tableId: 'T-105', owner: 'John Doe', amount: 50, duration: '30 Min', status: 'Completed', method: 'M-Pesa' },
-        { id: 'TX-1002', code: 'QGH12388BB', date: '2023-11-30 14:15', tableId: 'T-202', owner: 'Jane Smith', amount: 20, duration: '10 Min', status: 'Completed', method: 'M-Pesa' },
-        { id: 'TX-1003', code: 'QGH12377CC', date: '2023-11-30 14:00', tableId: 'T-108', owner: 'John Doe', amount: 20, duration: '10 Min', status: 'Failed', method: 'Cash' },
-        { id: 'TX-1004', code: 'QGH12366DD', date: '2023-11-30 13:45', tableId: 'T-105', owner: 'John Doe', amount: 50, duration: '30 Min', status: 'Completed', method: 'M-Pesa' },
-        { id: 'TX-1005', code: 'QGH12355EE', date: '2023-11-30 13:30', tableId: 'T-301', owner: 'City Pub', amount: 100, duration: '1 Hr', status: 'Completed', method: 'M-Pesa' },
-        { id: 'TX-1006', code: 'QGH12344FF', date: '2023-11-30 13:10', tableId: 'T-105', owner: 'John Doe', amount: 50, duration: '30 Min', status: 'Refunded', method: 'M-Pesa' },
-        { id: 'TX-1007', code: 'QGH12333GG', date: '2023-11-30 12:45', tableId: 'T-202', owner: 'Jane Smith', amount: 40, duration: '20 Min', status: 'Completed', method: 'Cash' },
-    ]);
+    // --- MOCK DATA - now from common data file ---
+    const [transactions] = useState(mockData.transactions);
 
     // --- STATE ---
     const [searchTerm, setSearchTerm] = useState('');

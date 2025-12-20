@@ -1,16 +1,16 @@
 import React from 'react';
 import ActivityTable from '../components/ActivityTable'; // Assuming you have this
 import './css/Dashboard.css'; 
+import { mockData, getTotalRevenue, getActiveTablesCount, getPendingPayoutsCount, getSystemIssuesCount } from '../data/mockData';
 
 function Dashboard() {
     
-    // MOCK DATA (In a real app, these come from your API)
-    // We use 'null' to represent loading, but here I've filled them for the 'Advanced' look.
+    // Use data from common mockData file
     const stats = {
-        revenue: 145000,
-        activeTables: 18,
-        pendingPayouts: 3,
-        issues: 1
+        revenue: getTotalRevenue(),
+        activeTables: getActiveTablesCount(),
+        pendingPayouts: getPendingPayoutsCount(),
+        issues: getSystemIssuesCount()
     };
     
     // Helper to format currency
@@ -125,10 +125,10 @@ function Dashboard() {
                 <div className="hd-card">
                     <h3 style={{margin:'0 0 20px 0', fontSize:'1.1rem'}}>Top Locations</h3>
                     <div style={{display:'flex', flexDirection:'column', gap:'15px'}}>
-                        {['Nairobi West', 'Kasarani', 'CBD Branch'].map((loc, index) => (
+                        {mockData.topLocations.map((loc, index) => (
                             <div key={index} style={{display:'flex', justifyContent:'space-between', alignItems:'center', borderBottom:'1px solid #f1f5f9', paddingBottom:'10px'}}>
-                                <span style={{fontWeight:'600', color:'#475569'}}>{index + 1}. {loc}</span>
-                                <span style={{fontWeight:'700', color:'#10b981'}}>KES {(45 - index*10)}k</span>
+                                <span style={{fontWeight:'600', color:'#475569'}}>{index + 1}. {loc.name}</span>
+                                <span style={{fontWeight:'700', color:'#10b981'}}>KES {loc.revenue.toLocaleString()}</span>
                             </div>
                         ))}
                     </div>
@@ -145,7 +145,7 @@ function Dashboard() {
                 {/* If you have the ActivityTable component, it renders here. 
                     If mock data is empty, ensure the table handles empty states gracefully */}
                 <div className="hd-card" style={{padding:0, overflow:'hidden'}}>
-                    <ActivityTable transactions={[]} /> 
+                    <ActivityTable transactions={mockData.recentTransactions} /> 
                 </div>
             </div>
 

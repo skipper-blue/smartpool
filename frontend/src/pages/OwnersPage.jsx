@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import OwnerDetail from '../components/ownersDetails'; // Make sure the path is correct
 import '../assets/css/Owners.css';
+import { mockData } from '../data/mockData';
 
 const OwnersPage = () => {
     // STATE
@@ -9,13 +10,8 @@ const OwnersPage = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedOwner, setSelectedOwner] = useState(null); // New state for navigation
 
-    // MOCK DATA
-    const [owners, setOwners] = useState([
-        { id: 1, name: 'John Kamau', email: 'john.k@gmail.com', phone: '+254 712 345 678', tables: 5, revenue: 125000, status: 'Active', location: 'Westlands' },
-        { id: 2, name: 'Sarah Ochieng', email: 'sarah.o@yahoo.com', phone: '+254 722 987 654', tables: 3, revenue: 89000, status: 'Active', location: 'Kasarani' },
-        { id: 3, name: 'David Mwangi', email: 'd.mwangi@biz.co.ke', phone: '+254 733 111 222', tables: 1, revenue: 12000, status: 'Pending', location: 'CBD' },
-        { id: 4, name: 'City Pub Ltd', email: 'admin@citypub.com', phone: '+254 700 000 000', tables: 12, revenue: 450000, status: 'Active', location: 'Langata' },
-    ]);
+    // MOCK DATA - now from common data file
+    const [owners, setOwners] = useState(mockData.owners);
 
     // FORM STATE
     const [formData, setFormData] = useState({ name: '', email: '', phone: '', location: '' });

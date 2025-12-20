@@ -1,33 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
 import '../assets/css/ControlCenter.css';
+import { mockData } from '../data/mockData';
 
-// --- MOCK DATA ---
-const MOCK_DEVICES = [
-    { 
-        id: 'T-101', name: 'Nairobi West - Bar A', status: 'Online', 
-        ip: '192.168.1.101', mac: '00:1A:2B:3C:4D:5E', firmware: 'v2.4.1', 
-        voltage: 12.4, signal: -55, uptime: '4d 12h',
-        config: { pricePerGame: 50, sleepTimer: 10, volume: 80 }
-    },
-    { 
-        id: 'T-102', name: 'Nairobi West - Bar A', status: 'Busy', 
-        ip: '192.168.1.102', mac: '00:1A:2B:3C:4D:5F', firmware: 'v2.4.0', 
-        voltage: 11.8, signal: -62, uptime: '12h 30m',
-        config: { pricePerGame: 50, sleepTimer: 15, volume: 60 }
-    },
-    { 
-        id: 'T-205', name: 'Kasarani - Club Z', status: 'Offline', 
-        ip: '192.168.2.005', mac: '00:1A:2B:3C:4D:88', firmware: 'v2.4.1', 
-        voltage: 0, signal: 0, uptime: '0m',
-        config: { pricePerGame: 40, sleepTimer: 5, volume: 100 }
-    },
-    { 
-        id: 'T-309', name: 'Westlands - Lounge', status: 'Online', 
-        ip: '192.168.3.009', mac: '00:1A:2B:3C:4D:99', firmware: 'v2.5.0', 
-        voltage: 12.6, signal: -48, uptime: '1d 2h',
-        config: { pricePerGame: 100, sleepTimer: 20, volume: 45 }
-    },
-];
+// --- MOCK DATA - now from common data file ---
+const MOCK_DEVICES = mockData.devices;
 
 const ControlCenter = ({ initialDeviceId }) => {
     // --- STATE ---

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../assets/css/Settlements.css';
 //import '../components/css/ActivityTable.css'; 
+import { mockData } from '../data/mockData'; 
 
 const Settlements = () => {
     
@@ -17,13 +18,8 @@ const Settlements = () => {
     const today = new Date();
     const formatDate = (date) => date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
 
-    // Mock Data
-    const [pendingPayouts, setPendingPayouts] = useState([
-        { id: 101, owner: 'John Doe', tables: 3, revenue: 65000, fee: 4500, payable: 60500 },
-        { id: 102, owner: 'Jane Smith', tables: 5, revenue: 150000, fee: 12000, payable: 138000 },
-        { id: 103, owner: 'Mike Ross', tables: 2, revenue: 28000, fee: 2000, payable: 26000 },
-        { id: 104, owner: 'Sarah Connor', tables: 4, revenue: 80000, fee: 6000, payable: 74000 },
-    ]);
+    // Mock Data - now from common data file
+    const [pendingPayouts, setPendingPayouts] = useState(mockData.pendingPayouts);
 
     // --- CALCULATIONS ---
     const totalUnpaid = pendingPayouts.reduce((acc, curr) => acc + curr.payable, 0);
